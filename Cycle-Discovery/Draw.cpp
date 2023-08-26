@@ -1,6 +1,5 @@
 #include "cycleUtils.h"
-#include <GL/glu.h>
-#include <GL/glut.h>
+#include "glcompat.h"
 
 
 void cycleUtils::drawNode(int nodeID)
@@ -146,9 +145,7 @@ void cycleUtils::drawSeletedArcs()
 			}
 			else
 				p = m_curveNet.arcs[m_selectedArcID].vertexList[(m_curveNet.arcs[m_selectedArcID].vertexList.size()) / 2];
-			char screenPrint[32];
-			_itoa_s(cap, screenPrint, 10);
-			drawString(p, screenPrint, 6);
+			drawString(p, std::to_string( cap ).c_str(), 6);
 		}
 	}
 }
@@ -279,10 +276,8 @@ void cycleUtils::drawCurveNetwork()
 			}
 			else
 				p = curve[curve.size() / 2];
-			char screenPrint[32];
 			wdth %= 8;
-			_itoa_s(wdth, screenPrint, 10);
-			drawString(p, screenPrint, 4);
+			drawString(p, std::to_string( wdth ).c_str(), 4);
 		}
 	}
 }
@@ -677,17 +672,17 @@ void cycleUtils::drawCycles()
 		glColor3f(0, 0, 0);
 		char screenPrint[32];
 		strcpy(screenPrint, "Worst Cycle: ");
-		char nc[32];
+		std::string nc;
 		int n = int(m_cyclesCost[worseID]);
-		_itoa_s(n, nc, 10);
+		nc = std::to_string( n );
 		screenPrint[13] = nc[0];
 		screenPrint[14] = '.';
 
 		n = (int(m_cyclesCost[worseID] * 10)) % 10;
-		_itoa_s(n, nc, 10);
+		nc = std::to_string( n );
 		screenPrint[15] = nc[0];
 		n = (int(m_cyclesCost[worseID] * 100)) % 10;
-		_itoa_s(n, nc, 10);
+		nc = std::to_string( n );
 		screenPrint[16] = nc[0];
 		screenPrint[17] = '\0';
 		AML::double3 pos = AML::double3(0, 0, 0);

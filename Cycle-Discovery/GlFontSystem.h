@@ -9,9 +9,7 @@
 #include <freetype/fttrigon.h>
 
 // OpenGL Headers
-#include <windows.h>                                      // (The GL Headers Need It)
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include "glcompat.h"
 
 // Some STL Headers
 #include <vector>

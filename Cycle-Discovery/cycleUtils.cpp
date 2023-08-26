@@ -2,6 +2,7 @@
 // #include "DrT.h"
 #include <iostream>
 #include <fstream>
+#include <float.h>
 
 
 cycleUtils::cycleUtils()
@@ -367,7 +368,7 @@ void cycleUtils::pickArc(const AML::double3 rayStr,const AML::double3 rayEnd,enu
 			break;
 		case MODIFY:
 			break;
-		case DELETE:
+		case DEL:
 			if (!m_selectArcList.back().empty())
 				m_selectArcList.back().erase(m_selectArcList.back().end() - 1);
 			break;
@@ -475,7 +476,7 @@ void cycleUtils::writeConfigurations()
 	char FileNameExt[400];
 	int ind = 0;
 	for (int i = strlen(FileName) - 1; i >= 0; i--){
-		if (FileName[i] == '//' || FileName[i] == '\\'){
+		if (FileName[i] == '/' || FileName[i] == '\\'){
 			FileName[i] = '\0';	break;
 		}
 		FileNameExt[ind] = FileName[i]; ind++;
@@ -489,7 +490,7 @@ void cycleUtils::writeConfigurations()
 	//	strcat(ModelName,".result");
 
 
-	strcat(FileName, "\\result.txt");
+	strcat(FileName, "/result.txt");
 	File.open(FileName, std::ios::app);
 
 	wxString text[] = { "sketch model", "curves", "non-manifold", "nodes", "maxdegree",

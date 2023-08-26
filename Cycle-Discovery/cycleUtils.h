@@ -7,8 +7,8 @@
 #include <wx/statusbr.h>
 #include "GraphStructure.h"
 #include <time.h>
-#include "colormap.h"
-#include "glFontSystem.h"
+#include "Colormap.h"
+#include "GlFontSystem.h"
 #include "CycleDiscovery.h"
 
 //the operation or visualization changes environment for current work.  

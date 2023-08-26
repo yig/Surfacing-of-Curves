@@ -7,12 +7,13 @@
 #include "wx/splitter.h"
 #include "wx/glcanvas.h"
 #include "wx/msw/glcanvas.h"
-#include <GL/glu.h>
-#include <gl/glut.h>
+#include "glcompat.h"
 #include <vector>
 #include "colormap.h"
 #include "amlVec.h"
 #include <time.h>
+#include "cycleUtils.h"
+#include <wx/window.h>
 
 class cycleUtils;//in charge of curve data and processing;
 
@@ -92,6 +93,8 @@ private:
 	void pickArc(int mouseX, int mouseY,enum OperationType oT);
 	void pickCycle(int mouseX, int mouseY,enum OperationType oT);
 	void rotateModel();
+	
+	wxGLContext m_context;
 
 	DECLARE_EVENT_TABLE()
 };

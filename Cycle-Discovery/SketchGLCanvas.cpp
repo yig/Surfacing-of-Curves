@@ -1,9 +1,13 @@
 #include "SketchGLCanvas.h"
 #include <wx/dcclient.h>
 #include <wx/Statusbr.h>
+#include <wx/filedlg.h>
 #include "cycleUtils.h"
 #include <fstream>
 //#include "stdwx.h"
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
 
 BEGIN_EVENT_TABLE( SketchGLCanvas, wxGLCanvas )
 	EVT_PAINT( SketchGLCanvas::OnPaint )
@@ -17,8 +21,13 @@ SketchGLCanvas::SketchGLCanvas(	wxWindow *parent, wxWindowID id,
 		 const wxPoint& pos,
 		 const wxSize& size, long style,
 		 const wxString& name, int *attribList)
-		 : wxGLCanvas( parent, id, pos, size, style | wxFULL_REPAINT_ON_RESIZE , name )
-{	m_initialized = false;	m_rotationTimes=1;	m_rotationCount = 0;}
+		 : wxGLCanvas( parent, id, NULL, pos, size, style | wxFULL_REPAINT_ON_RESIZE , name ),
+		 m_context(this)
+{
+	m_initialized = false;
+	m_rotationTimes=1;
+	m_rotationCount = 0;
+}
 
 SketchGLCanvas::~SketchGLCanvas ()
 {
@@ -26,7 +35,7 @@ SketchGLCanvas::~SketchGLCanvas ()
 
 void SketchGLCanvas::Initialize()
 {
-		SetCurrent();
+		SetCurrent(m_context);
 
 		GetClientSize( &m_width, &m_height );
 
@@ -165,7 +174,9 @@ void SketchGLCanvas::Initialize()
 		glFrontFace(GL_CCW);
 		glEnable(GL_LIGHTING);
 
-		m_isRotate = false;		m_frameRate = 50;		m_timeCurr = clock();
+		m_isRotate = false;
+		m_frameRate = 50;
+		m_timeCurr = clock();
 		m_timePrev = m_timeCurr-100;
 		m_rotationCount=0;
 		m_frames=0;
@@ -176,7 +187,7 @@ void SketchGLCanvas::screenShot(){
 
 	int windowWidth, windowHeight;
 	GetClientSize(&windowWidth, &windowHeight);
-	byte*  bmpBuffer = (byte*)malloc(windowWidth*windowHeight*3);
+	std::byte*  bmpBuffer = (std::byte*)malloc(windowWidth*windowHeight*3);
 	char fileName[400],fileName2[400];
 	if  (bmpBuffer!=NULL){
 		glReadBuffer(GL_BACK); 
@@ -190,45 +201,13 @@ void SketchGLCanvas::screenShot(){
 		for(int i=strlen(fileName)-1;i>0;i--){
 			if(fileName[i]=='.') fileName[i]='\0';
 		}
-		char shotNum[32];
-		_itoa_s(m_shotNum,shotNum,10);
+		std::string shotNum = std::to_string(m_shotNum);
 		strcat(fileName,"_");
-		strcat(fileName,shotNum);
+		strcat(fileName,shotNum.c_str());
 		strcpy(fileName2,fileName);
-		strcat(fileName,".bmp");
+		strcat(fileName,".png");
 		m_shotNum++;
-		//sprintf(fileName, "frames/frame_%d.bmp", m_frameno);
-		FILE *filePtr = fopen(fileName,  "wb");
-		if (filePtr!=NULL) {
-			BITMAPFILEHEADER  bitmapFileHeader;
-			BITMAPINFOHEADER  bitmapInfoHeader;
-			bitmapFileHeader.bfType =  ((WORD) ('M' << 8) | 'B'); ;  //"BM"
-			bitmapFileHeader.bfSize =  windowWidth*windowHeight*3+sizeof(BITMAPFILEHEADER) +  sizeof(BITMAPINFOHEADER);
-			bitmapFileHeader.bfReserved1 =  0;
-			bitmapFileHeader.bfReserved2 = 0;
-			bitmapFileHeader.bfOffBits  =
-				sizeof(BITMAPFILEHEADER) +  sizeof(BITMAPINFOHEADER);
-			bitmapInfoHeader.biSize =  sizeof(BITMAPINFOHEADER);
-			bitmapInfoHeader.biWidth =  windowWidth-1;
-			bitmapInfoHeader.biHeight =  windowHeight-1;
-			bitmapInfoHeader.biPlanes = 1;
-			bitmapInfoHeader.biBitCount  = 24;
-			bitmapInfoHeader.biCompression =  BI_RGB;
-			bitmapInfoHeader.biSizeImage = 0;
-			bitmapInfoHeader.biXPelsPerMeter  = 0; // ?
-			bitmapInfoHeader.biYPelsPerMeter = 0; //  ?
-			bitmapInfoHeader.biClrUsed = 0;
-			bitmapInfoHeader.biClrImportant =  0;
-
-			fwrite(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1,  filePtr);
-			fwrite(&bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1,  filePtr);
-			for(int i=0;i<windowWidth*windowHeight*3;i++) 
-				fputc(bmpBuffer[i], filePtr); 
-		//	fwrite(bmpBuffer, windowWidth*windowHeight*3, 1,  filePtr);
-			fflush(filePtr);
-			fclose(filePtr);
-		}
-		free(bmpBuffer);
+		stbi_write_png( fileName, windowWidth-1, windowHeight-1, 3, bmpBuffer, (windowWidth-1)*3 );
 	}
 	
 	std::fstream File;
@@ -242,7 +221,7 @@ void SketchGLCanvas::setViewPort()
 {
 	wxString fileName = wxFileSelector(wxT("Open ViewPort"), (const wxChar *) NULL,
 		(const wxChar *) NULL, wxT("ViewPort"),
-		wxT("viewpoint files (*.viewPoint)|*.viewPoint"),wxOPEN);
+		wxT("viewpoint files (*.viewPoint)|*.viewPoint"),wxFD_OPEN);
 
 	if(strlen(fileName)==0){
 		return;
@@ -305,7 +284,7 @@ void SketchGLCanvas::rotateModel(){
 }
 void SketchGLCanvas::Render()
 {
-	SetCurrent();
+	SetCurrent(m_context);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -522,7 +501,7 @@ void SketchGLCanvas::OnSize ( wxSizeEvent &event )
 
 	glMultMatrixd(m_RotationMatrix);
 
-	wxGLCanvas::OnSize( event );
+	event.Skip();
 }
 
 /*

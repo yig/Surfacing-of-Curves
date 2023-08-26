@@ -219,3 +219,6 @@ pip-log.txt
 *.exe
 .exe
 SketchSurfaceMaker.exe
+
+/.xmake
+/build

@@ -50,7 +50,7 @@ public:
 			const double org4, const bool &org5, const bool &org6,
 			AllMultipleArcs &tar, std::vector<double> &tar2);
 
-	void GraphSearch::computeGeneralHamiltonGraph(const Capacity &capacity,
+	void computeGeneralHamiltonGraph(const Capacity &capacity,
 			const std::vector<std::pair<int,int> > &allArcs,
 			const std::vector<double> &weights,
 			const int K,const bool isConnect,

@@ -22,6 +22,7 @@
 #include "cycleUtils.h"
 #include "HyperGraph.h"
 #include "time.h"
+#include <string>
 
 using namespace std;
 
@@ -493,7 +494,7 @@ void SketchSurfaceMakerFrame::OnOpenCurveFile(wxCommandEvent& event)
 
 	wxString fileName = wxFileSelector(wxT("Open Curve File"), (const wxChar *) NULL,
 		(const wxChar *) NULL, wxT("CURVE"),
-		wxT("curve files (*.curve)|*.curve|contour files (*.contour)|*.contour"),wxOPEN);//|maya files (*.ma)|*.ma|crv files (*.crv)|*.crv|all files (*.*)|*.*
+		wxT("curve files (*.curve)|*.curve|contour files (*.contour)|*.contour"),wxFD_OPEN);//|maya files (*.ma)|*.ma|crv files (*.crv)|*.crv|all files (*.*)|*.*
 
 // 	fileIOHelper->ProcessContourData(fileName.mb_str());
 // 	return;
@@ -606,16 +607,11 @@ void SketchSurfaceMakerFrame::OnOpenCurveFile(wxCommandEvent& event)
 
 	clock_t  time_end = clock();
 	clock_t m_timeConsuming = time_end - time_str;
-	char tbuf[100];
-	_itoa(int(m_timeConsuming),tbuf,10);
-	char tx1[400];
-	strcpy(tx1,"Time Used: ");
-	char tx2[400];
-	strcpy(tx2,tbuf);
-	strcpy(tbuf,tx1);
-	strcat(tbuf,tx2);
-	strcat(tbuf,"mm");
-	statusBarMain->SetStatusText(tbuf,0);
+	std::string tbuf = std::to_string(int(m_timeConsuming));
+	std::string tx1("Time Used: ");
+	std::string tx2 = tbuf;
+	tbuf = tx1 + tx2 + "mm";
+	statusBarMain->SetStatusText(tbuf.c_str(),0);
 }
 
 void SketchSurfaceMakerFrame::OnRecomputeAllClick(wxCommandEvent& event)
@@ -633,17 +629,11 @@ void SketchSurfaceMakerFrame::OnRecomputeAllClick(wxCommandEvent& event)
 
 	clock_t  time_end = clock();
 	clock_t m_timeConsuming = time_end - time_str;
-	char tbuf[100];
-	_itoa(int(m_timeConsuming),tbuf,10);
-
-	char tx1[400];
-	strcpy(tx1,"Time Used: ");
-	char tx2[400];
-	strcpy(tx2,tbuf);
-	strcpy(tbuf,tx1);
-	strcat(tbuf,tx2);
-	strcat(tbuf,"mm");
-	statusBarMain->SetStatusText(tbuf,0);
+	std::string tbuf = std::to_string(int(m_timeConsuming));
+	std::string tx1("Time Used: ");
+	std::string tx2 = tbuf;
+	tbuf = tx1 + tx2 + "mm";
+	statusBarMain->SetStatusText(tbuf.c_str(),0);
 }
 
 void SketchSurfaceMakerFrame::OnSaveNewCurve(wxCommandEvent& event)
@@ -878,15 +868,12 @@ void SketchSurfaceMakerFrame::OnShowSurfaceClick(wxCommandEvent& event)
 		 m_cycleUtils->surfaceBuilding();
 		 clock_t  time_end = clock();
 		 clock_t m_timeConsuming = time_end - time_str;
-		 char tbuf[100];
-		 _itoa(int(m_timeConsuming),tbuf,10);
-		 char *tx1 = "Time Used: ";
-		 char *tx2 = new char[strlen(tbuf)];
-		 strcpy(tx2,tbuf);
-		 strcpy(tbuf,tx1);
-		 strcat(tbuf,tx2);
-		 strcat(tbuf,"mm");
-		 statusBarMain->SetStatusText(tbuf);
+		 
+		 std::string tbuf = std::to_string(int(m_timeConsuming));
+		 std::string tx1("Time Used: ");
+		 std::string tx2 = tbuf;
+		 tbuf = tx1 + tx2 + "mm";
+		 statusBarMain->SetStatusText(tbuf.c_str(),0);
 	 }
 	 m_openGLView->Render();
 }
@@ -1014,15 +1001,11 @@ void SketchSurfaceMakerFrame::OnCycleConstraintClick(wxCommandEvent& event)
 //		m_openGLView->Render();
 		clock_t  time_end = clock();
 		clock_t m_timeConsuming = time_end - time_str;
-		char tbuf[100];
-		_itoa(int(m_timeConsuming),tbuf,10);
-		char *tx1 = "Time Used: ";
-		char *tx2 = new char[strlen(tbuf)];
-		strcpy(tx2,tbuf);
-		strcpy(tbuf,tx1);
-		strcat(tbuf,tx2);
-		strcat(tbuf,"mm");
-		statusBarMain->SetStatusText(tbuf,0);
+		std::string tbuf = std::to_string(int(m_timeConsuming));
+		std::string tx1("Time Used: ");
+		std::string tx2 = tbuf;
+		tbuf = tx1 + tx2 + "mm";
+		statusBarMain->SetStatusText(tbuf.c_str(),0);
 		PopBackAll();
 		showSurface->SetValue(false);
 		m_cycleUtils->m_showSurface = false;
@@ -1080,7 +1063,8 @@ void SketchSurfaceMakerFrame::OnCapacityBtnClick(wxCommandEvent& event)
 		m_cycleUtils->setShowCylceMode(0);
 
 */
-		capacityBtn->SetLabel("C&Apacity");		m_cycleUtils->m_showCapacity=false;
+		capacityBtn->SetLabel("C&Apacity");
+		m_cycleUtils->m_showCapacity=false;
 		m_cycleUtils->m_showSingleCurve=false;
 		if(isRight){
 			clock_t  time_str = clock();
@@ -1095,15 +1079,11 @@ void SketchSurfaceMakerFrame::OnCapacityBtnClick(wxCommandEvent& event)
 //			m_openGLView->Render();
 			clock_t  time_end = clock();
 			clock_t m_timeConsuming = time_end - time_str;
-			char tbuf[100];
-			_itoa(int(m_timeConsuming),tbuf,10);
-			char *tx1 = "Time Used: ";
-			char *tx2 = new char[strlen(tbuf)];
-			strcpy(tx2,tbuf);
-			strcpy(tbuf,tx1);
-			strcat(tbuf,tx2);
-			strcat(tbuf,"mm");
-			statusBarMain->SetStatusText(tbuf,0);
+			std::string tbuf = std::to_string(int(m_timeConsuming));
+			std::string tx1("Time Used: ");
+			std::string tx2 = tbuf;
+			tbuf = tx1 + tx2 + "mm";
+			statusBarMain->SetStatusText(tbuf.c_str(),0);
 		}
 		PopBackAll();
 		showSurface->SetValue(false);
@@ -1200,15 +1180,11 @@ void SketchSurfaceMakerFrame::OnParametersClick(wxCommandEvent& event)
 
 		clock_t  time_end = clock();
 		clock_t m_timeConsuming = time_end - time_str;
-		char tbuf[100];
-		_itoa(int(m_timeConsuming),tbuf,10);
-		char *tx1 = "Time Used: ";
-		char *tx2 = new char[strlen(tbuf)];
-		strcpy(tx2,tbuf);
-		strcpy(tbuf,tx1);
-		strcat(tbuf,tx2);
-		strcat(tbuf,"mm");
-		statusBarMain->SetStatusText(tbuf,0);
+		std::string tbuf = std::to_string(int(m_timeConsuming));
+		std::string tx1("Time Used: ");
+		std::string tx2 = tbuf;
+		tbuf = tx1 + tx2 + "mm";
+		statusBarMain->SetStatusText(tbuf.c_str(),0);
 	//	showSurface->SetValue(false);
 	//	m_cycleUtils->setShowSurface(false);
 	}
@@ -1636,7 +1612,17 @@ void SketchSurfaceMakerFrame::OnGLViewKeyUp(wxKeyEvent& event)
 void SketchSurfaceMakerFrame::OnGLViewKeyDown(wxKeyEvent& event)
 {
 //	m_openGLView->SetFocus();
-	if (event.ControlDown()){		switch(event.GetKeyCode()){			case 'L': OnOpenCurveFile(wxCommandEvent(WXTYPE(0),0));break;			case 'S': OnSaveAll(wxCommandEvent(WXTYPE(0),0));break;			case 'C': OnCycleConstraintClick(wxCommandEvent(WXTYPE(0),0));break;			case 'A': OnCapacityBtnClick(wxCommandEvent(WXTYPE(0),0));break;			case 'P': OnParametersClick(wxCommandEvent(WXTYPE(0),0));break;			case WXK_UP:				if(capacityBtn->GetLabel()=="Done"){
+	wxCommandEvent evt(WXTYPE(0),0);
+	wxSpinEvent spinEvent(WXTYPE(0),0);
+	if (event.ControlDown()){
+		switch(event.GetKeyCode()){
+			case 'L': OnOpenCurveFile(evt);break;
+			case 'S': OnSaveAll(evt);break;
+			case 'C': OnCycleConstraintClick(evt);break;
+			case 'A': OnCapacityBtnClick(evt);break;
+			case 'P': OnParametersClick(evt);break;
+			case WXK_UP:
+				if(capacityBtn->GetLabel()=="Done"){
 					int cap = m_cycleUtils->getSelectArcCapacity();
 					if(cap<8)
 						cap++;
@@ -1644,12 +1630,76 @@ void SketchSurfaceMakerFrame::OnGLViewKeyDown(wxKeyEvent& event)
 					m_openGLView->Render();
 				}
 				break;
-			case WXK_DOWN:				if(capacityBtn->GetLabel()=="Done"){
+			case WXK_DOWN:
+				if(capacityBtn->GetLabel()=="Done"){
 					int cap = m_cycleUtils->getSelectArcCapacity();
 					if(cap>1)
 						cap--;
 					m_cycleUtils->setCapacity(cap);
-					m_openGLView->Render();				}				break;			default: break;		}		return;	}	if (event.ShiftDown()){		switch(event.GetKeyCode()){			case 'A':				if(!showCurveMode->IsEnabled()|| !showCurveMode->IsShown()) break;				showCurveMode->SetSelection((1+showCurveMode->GetSelection())%2);				OnShowCurveModeSelect(wxCommandEvent(WXTYPE(0),0));break;			case 'C':				if(!showCycleMode->IsEnabled()|| !showCycleMode->IsShown()) break;				showCycleMode->SetSelection((1+showCycleMode->GetSelection())%2);				OnShowCycleModeSelect(wxCommandEvent(WXTYPE(0),0));break;			case 'S':				if(!showSurfaceMode->IsEnabled()|| !showSurfaceMode->IsShown()) break;				showSurfaceMode->SetSelection((1+showSurfaceMode->GetSelection())%2);				OnSurfaceModeSelect(wxCommandEvent(WXTYPE(0),0));break;			default: break;		}		return;	}	switch(event.GetKeyCode()){			case WXK_HOME:	IsFullScreen()?ShowFullScreen(false):ShowFullScreen(true); break;			case 'A':				if(!showCurveNetwork->IsEnabled()|| !showCurveNetwork->IsShown()) break;				showCurveNetwork->SetValue(!showCurveNetwork->GetValue());				OnShowCurveNetworkClick(wxCommandEvent(WXTYPE(0),0));break;			case 'C':				if(!showCycles->IsEnabled()|| !showCycles->IsShown()) break;				showCycles->SetValue(!showCycles->GetValue());				OnShowCyclesClick(wxCommandEvent(WXTYPE(0),0));break;			case 'S':				if(!showSurface->IsEnabled()|| !showSurface->IsShown()) break;				showSurface->SetValue(!showSurface->GetValue());				OnShowSurfaceClick(wxCommandEvent(WXTYPE(0),0));break;			case 'N':				if(!showSingleCycle->IsEnabled()|| !showSingleCycle->IsShown()) break;				showSingleCycle->SetValue(!showSingleCycle->GetValue());				OnShowSingleCycleSelect(wxCommandEvent(WXTYPE(0),0));break;			case WXK_LEFT:				if(!showCycleSize->IsEnabled()|| !showCycleSize->IsShown()) break;				showCycleSize->SetValue(showCycleSize->GetValue()-1);				OnShowCycleSizeChange(wxSpinEvent(WXTYPE(0),0));break;			case WXK_RIGHT:				if(!showCycleSize->IsEnabled()|| !showCycleSize->IsShown()) break;				showCycleSize->SetValue(showCycleSize->GetValue()+1);				OnShowCycleSizeChange(wxSpinEvent(WXTYPE(0),0));break;			case WXK_UP: if (m_cycleUtils->m_nodeSize<20) m_cycleUtils->m_nodeSize += 1; break;				if(!lineSize->IsEnabled()|| !lineSize->IsShown()) break;				lineSize->SetValue(lineSize->GetValue()+1);				OnlineSizeChange(wxSpinEvent(WXTYPE(0),0));break;			case WXK_DOWN: if (m_cycleUtils->m_nodeSize>2) m_cycleUtils->m_nodeSize -= 1; break;				if(!lineSize->IsEnabled()|| !lineSize->IsShown()) break;				lineSize->SetValue(lineSize->GetValue()-1);				OnlineSizeChange(wxSpinEvent(WXTYPE(0),0));break;			case WXK_DELETE: m_cycleUtils->rollBack(SHOWSINGLECURVE);break;
+					m_openGLView->Render();
+				}
+				break;
+			default: break;
+		}
+		return;
+	}
+	if (event.ShiftDown()){
+		switch(event.GetKeyCode()){
+			case 'A':
+				if(!showCurveMode->IsEnabled()|| !showCurveMode->IsShown()) break;
+				showCurveMode->SetSelection((1+showCurveMode->GetSelection())%2);
+				OnShowCurveModeSelect(evt);break;
+			case 'C':
+				if(!showCycleMode->IsEnabled()|| !showCycleMode->IsShown()) break;
+				showCycleMode->SetSelection((1+showCycleMode->GetSelection())%2);
+				OnShowCycleModeSelect(evt);break;
+			case 'S':
+				if(!showSurfaceMode->IsEnabled()|| !showSurfaceMode->IsShown()) break;
+				showSurfaceMode->SetSelection((1+showSurfaceMode->GetSelection())%2);
+				OnSurfaceModeSelect(evt);break;
+
+			default: break;
+		}
+		return;
+	}
+	switch(event.GetKeyCode()){
+			case WXK_HOME:	IsFullScreen()?ShowFullScreen(false):ShowFullScreen(true); break;
+			case 'A':
+				if(!showCurveNetwork->IsEnabled()|| !showCurveNetwork->IsShown()) break;
+				showCurveNetwork->SetValue(!showCurveNetwork->GetValue());
+				OnShowCurveNetworkClick(evt);break;
+			case 'C':
+				if(!showCycles->IsEnabled()|| !showCycles->IsShown()) break;
+				showCycles->SetValue(!showCycles->GetValue());
+				OnShowCyclesClick(evt);break;
+			case 'S':
+				if(!showSurface->IsEnabled()|| !showSurface->IsShown()) break;
+				showSurface->SetValue(!showSurface->GetValue());
+				OnShowSurfaceClick(evt);break;
+			case 'N':
+				if(!showSingleCycle->IsEnabled()|| !showSingleCycle->IsShown()) break;
+				showSingleCycle->SetValue(!showSingleCycle->GetValue());
+				OnShowSingleCycleSelect(evt);break;
+
+			case WXK_LEFT:
+				if(!showCycleSize->IsEnabled()|| !showCycleSize->IsShown()) break;
+				showCycleSize->SetValue(showCycleSize->GetValue()-1);
+				OnShowCycleSizeChange(spinEvent);break;
+			case WXK_RIGHT:
+				if(!showCycleSize->IsEnabled()|| !showCycleSize->IsShown()) break;
+				showCycleSize->SetValue(showCycleSize->GetValue()+1);
+				OnShowCycleSizeChange(spinEvent);break;
+
+			case WXK_UP: if (m_cycleUtils->m_nodeSize<20) m_cycleUtils->m_nodeSize += 1; break;
+				if(!lineSize->IsEnabled()|| !lineSize->IsShown()) break;
+				lineSize->SetValue(lineSize->GetValue()+1);
+				OnlineSizeChange(spinEvent);break;
+			case WXK_DOWN: if (m_cycleUtils->m_nodeSize>2) m_cycleUtils->m_nodeSize -= 1; break;
+				if(!lineSize->IsEnabled()|| !lineSize->IsShown()) break;
+				lineSize->SetValue(lineSize->GetValue()-1);
+				OnlineSizeChange(spinEvent);break;
+
+			case WXK_DELETE: m_cycleUtils->rollBack(SHOWSINGLECURVE);break;
 			case WXK_ESCAPE: exit(0);
 			case '1': showMode=CURVE; setShowMode();break;
 			case '2': showMode=CYCLE; setShowMode();break;
@@ -1663,7 +1713,11 @@ void SketchSurfaceMakerFrame::OnGLViewKeyDown(wxKeyEvent& event)
 			case '8': m_cycleUtils->setShowNewNormal();break;
 			case '9':m_openGLView->screenShot();break;
 			case 'V':m_openGLView->setViewPort(); break;
-			default:break;	}	m_openGLView->Render();	return;}
+			default:break;
+	}
+	m_openGLView->Render();
+	return;
+}
 void SketchSurfaceMakerFrame::OnKeyDown(wxKeyEvent& event)
 {
 	OnGLViewKeyDown(event);

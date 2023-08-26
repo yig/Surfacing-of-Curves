@@ -788,7 +788,7 @@ void cycleDiscovery::computeTwistTables()
 				tnorm.push_back(endNormals[index][k1][k2][1]);
 				normalTable[k1][k2] = tnorm;
 				itc = std::max_element(tc.begin(), tc.end());
-				twistTableConfidence[k1][k2] = min(1, (*itc - twistTable[k1][k2]) / M_PI);
+				twistTableConfidence[k1][k2] = fmin(1, (*itc - twistTable[k1][k2]) / M_PI);
 			}
 		}
 
@@ -1525,7 +1525,7 @@ void cycleDiscovery::searchAlmostMinPoleGraph()
 	std::vector<std::vector<int> > nodesVal(numOfPole);
 
 	for (int i = 0; i<numOfPole; i++){
-		int tsn = min(nState, m_expandPoleSequence[i].stateNum);
+		int tsn = std::min(nState, m_expandPoleSequence[i].stateNum);
 		stateInd[i].resize(tsn, -1);			costsVal[i].resize(tsn, FLT_MAX);
 		nodesVal[i].resize(tsn, -1);			prevsVal[i].resize(tsn, -1);
 	}
@@ -1626,7 +1626,7 @@ void cycleDiscovery::searchAlmostMinPoleGraph()
 					}
 				}
 				std::vector<long long> indices;
-				previnds.push_back(long long(n));
+				previnds.push_back((long long)(n));
 				for (int j = 0; j<pos.size(); j++){
 					indices.push_back(previnds[pos[j]]);
 				}
@@ -2303,7 +2303,7 @@ void cycleDiscovery::computeArcCost()
 	double possiWorse = maxN - minN;
 	for (int i = 0; i<m_arcsCost.size(); i++){
 		if (m_arcsCost[i]<FLT_MAX)
-			m_arcsCost[i] = min(1, (m_arcsCost[i] - minN) / possiWorse);
+			m_arcsCost[i] = fmin(1, (m_arcsCost[i] - minN) / possiWorse);
 		else
 			m_arcsCost[i] = 1;
 		//		m_arcsCost[i] = 1-m_arcsCost[i];
@@ -2382,8 +2382,8 @@ void cycleDiscovery::computeCycleCost()
 	//	double possiWorse = *std::max_element(m_cyclesCost.begin(),m_cyclesCost.end());
 	for (int i = 0; i<m_cyclesCost.size(); i++){
 		if (m_cyclesCost[i]<FLT_MAX){
-			m_cyclesCost[i] = min(1, (m_cyclesCost[i]) / maxN);
-			m_cyclesCost[i] = max(0, m_cyclesCost[i]);
+			m_cyclesCost[i] = fmin(1, (m_cyclesCost[i]) / maxN);
+			m_cyclesCost[i] = fmax(0, m_cyclesCost[i]);
 		}
 		else
 			m_cyclesCost[i] = 1;

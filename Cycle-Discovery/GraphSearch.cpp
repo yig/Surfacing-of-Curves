@@ -345,8 +345,8 @@ std::vector<std::vector<int> >  enumSets(const std::vector<int> &capacity,
 			int l=0;
 			for(int i=0;i<ncaps.size();i++)
 				l+=ncaps[i];
-			l = max(0,k-l);
-			int h = min(k,capacity.front());
+			l = std::max(0,k-l);
+			int h = std::min(k,capacity.front());
 			if(l>h){
 				int t = l;
 				l = h;

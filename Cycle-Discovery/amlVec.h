@@ -42,7 +42,7 @@ namespace AML{
 // Code written by Nathan Carr to represent n-dimensional vector, with 
 //   speedups for special case of n=1,2,3. Added to AML by Pushkar Joshi
 
-#include <windows.h>
+// #include <windows.h>
 #include <math.h>
 
 namespace AML {
@@ -51,14 +51,14 @@ namespace AML {
 
 
 #define GEN_OP_EQUALS(OP,S)\
-	inline vec<T,S> &operator OP= (const vec<T,S>& v){\
+	inline vec<T,S> &operator OP (const vec<T,S>& v){\
 		for(int i=0;i<S;++i)\
-			(*this)[i] OP= v[i];\
+			(*this)[i] OP v[i];\
 		return *this;\
 	}\
-	inline vec<T,S> &operator OP= (T s){\
+	inline vec<T,S> &operator OP (T s){\
 		for(int i=0;i<S;++i)\
-			(*this)[i] OP= s;\
+			(*this)[i] OP s;\
 		return *this;\
 	}
 
@@ -128,10 +128,10 @@ namespace AML {
 	inline bool operator!=(const vec<T,S>& v)const{\
 		return !( (*this) == v );\
 	}\
-	GEN_OP_EQUALS(+,S)\
-	GEN_OP_EQUALS(-,S)\
-	GEN_OP_EQUALS(*,S)\
-	GEN_OP_EQUALS(/,S)
+	GEN_OP_EQUALS(+=,S)\
+	GEN_OP_EQUALS(-=,S)\
+	GEN_OP_EQUALS(*=,S)\
+	GEN_OP_EQUALS(/=,S)
 
 #define PARTIAL_VEC_OPS(S) \
 	inline T &operator[](size_t nIndex){ return (&x)[nIndex];}\
@@ -146,7 +146,7 @@ class vec
 public:
     ALL_VEC_OPS(S);
 	
-	typedef typename T* iter;
+	typedef T* iter;
 	inline iter begin(){ a_data;}
 	inline iter end(){   return a_data+S;}
     inline T &operator[](size_t nIndex){ return a_data[nIndex];}

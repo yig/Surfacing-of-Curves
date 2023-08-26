@@ -64,7 +64,7 @@ public:
 		const char* fileName,
 		CycleSet& cycle);
 
-	bool FileIOHelper::ReadMesh(
+	bool ReadMesh(
 		const char* fileName,
 		TriangleSurface& mesh);
 
