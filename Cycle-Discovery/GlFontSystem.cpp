@@ -1,5 +1,5 @@
 // Include Our Header File.
-#include "glFontSystem.h"
+#include "GlFontSystem.h"
 
 namespace freetype {
 
